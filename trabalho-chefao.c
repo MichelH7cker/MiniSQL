@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 typedef struct {
     char Instituicao;
@@ -61,7 +62,7 @@ void separaString(char **entrada, char entradaSeparada){
         } else {
 
         }
-        
+
         entradaSeparada[contSep] += entrada[contEnt];
         contEnt++;
     }
