@@ -9,21 +9,42 @@ typedef struct{
 
 */
 
+void completaConteudoFrom(char **conteudoFrom){
+    for (int i = 0; i < 3; i++){
+        strcpy(conteudoFrom[i], "none");
+    }  
+}
+
+void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada){
+    int passouPeloFrom = 0;
+    int posicaoFrom = 0;
+    int posicaoEntrada = 0;
+    while ((strcmp(entradaSeparada[posicaoEntrada], "where") != 0) || (entradaSeparada[posicaoEntrada] == '\0') ){
+        if (passouPeloFrom){
+            strcpy(conteudoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
+            posicaoFrom++;
+        }
+        if (strcmp(entradaSeparada[posicaoEntrada], "from") == 0){
+            passouPeloFrom = 1;
+        }
+        posicaoEntrada++;
+    }
+}
+
 void selecionaArquivo(char **conteudoFrom){
-    printf("entrou na selciona Arquivo\n");
-    printf("%s\n", conteudoFrom);
-    for (int i = 0; i < 5; i++){
-        printf("entrou no for \n");
-        if (strcmp(conteudoFrom[i], "Docentes") == 0){ //tabela 5
-            //open Docentes
-        } else if(strcmp(conteudoFrom[i], "Progs") == 0){ //tabela 4
-            printf("conseguimos!");
-        } else { // tabela 3
-            // open Trabalhos
+    for (int i = 0; i < 3; i++){
+        if (strcmp(conteudoFrom[i], "Progs") == 0){
+            //printf("entrei em Progs \n");
+        } else if(strcmp(conteudoFrom[i], "Docentes") == 0){
+            //printf("entrei em docentes \n");
+        } else if(strcmp(conteudoFrom[i], "Trabalhos") == 0){
+            //printf("entrei em trabalhos \n");
+        } else { //conteudoFrom não tem nada
+            printf("entrei em nada \n");
+            break;
         }
         
     }
-    
 }
 
 void retiraVirgula(char *entrada, char *entradaSemVirgula){    
@@ -71,15 +92,15 @@ int main(void){
 
     int quantidadePalavras = verificaQuantidadePalavras(entradaSemVirgula);
 
-    char *t;
+    // MALLOC
     char **entradaSeparada;
-    entradaSeparada = malloc(sizeof(char*) * quantidadePalavras);
+    entradaSeparada = malloc(sizeof(char*) * quantidadePalavras); //malloc
     for (int i = 0; i < quantidadePalavras; i++) {
         entradaSeparada[i] = malloc(sizeof(char) * 50);
     }
 
+    char *t;
     t = strtok(entradaSemVirgula, " "); //pega string até chegar em um espaço
-    
     int i = 0;
     while(t != NULL){
         strcpy(entradaSeparada[i], t);
@@ -89,22 +110,16 @@ int main(void){
     }
 
     mostraEntradaSeparada(entradaSeparada, quantidadePalavras); 
-    
-    int passouPeloFrom = 0;
-    char conteudoFrom[5][20];
-    int j = 0;
-    int k = 0;
-    while ( (strcmp(entradaSeparada[k], "where") != 0) || (entradaSeparada[k] == '\0') ){
-        if (passouPeloFrom){
-            strcpy(conteudoFrom[j], entradaSeparada[k]);
-            j++;
-        }
-        if (strcmp(entradaSeparada[k], "from") == 0){
-            passouPeloFrom = 1;
-        }
-        k++;
+
+    // MALLOC
+    char **conteudoFrom;
+    conteudoFrom = malloc(sizeof(char*) * 3); //malloc
+    for (int i = 0; i < 3; i++) {
+        conteudoFrom[i] = malloc(sizeof(char) * 50);
     }
-    
+
+    completaConteudoFrom(conteudoFrom);
+    armazenaArquivosFrom(conteudoFrom, entradaSeparada);
     selecionaArquivo(conteudoFrom);
 }
 
