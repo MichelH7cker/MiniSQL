@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 /*
 typedef struct{
@@ -7,10 +8,45 @@ typedef struct{
 } Progs;
 
 */
-int verificaQuantidadePalavras(char *entrada, int tamanhoStr){
+
+void selecionaArquivo(char **conteudoFrom){
+    printf("entrou na selciona Arquivo\n");
+    printf("%s\n", conteudoFrom);
+    for (int i = 0; i < 5; i++){
+        printf("entrou no for \n");
+        if (strcmp(conteudoFrom[i], "Docentes") == 0){ //tabela 5
+            //open Docentes
+        } else if(strcmp(conteudoFrom[i], "Progs") == 0){ //tabela 4
+            printf("conseguimos!");
+        } else { // tabela 3
+            // open Trabalhos
+        }
+        
+    }
+    
+}
+
+void retiraVirgula(char *entrada, char *entradaSemVirgula){    
+    int j = 0;
+    for (int i = 0; entrada[i] != '\0'; i++){
+        if (entrada[i] != ','){ 
+            entradaSemVirgula[j] = entrada[i];
+            j++;
+        }
+    }
+    entradaSemVirgula[j] = '\0';
+}
+
+void mostraEntradaSeparada(char **entradaSeparada, int quantidadePalavras){
+    for (int i = 0; i < quantidadePalavras; i++){
+        printf("%s \n", entradaSeparada[i]);
+    }
+}
+
+int verificaQuantidadePalavras(char *entrada){
     int quantidade = 1;
     int i = 0;
-    while (i < tamanhoStr){
+    while (entrada[i] != '\0'){
         if (entrada[i] == ' '){
             quantidade++;
         } 
@@ -19,35 +55,57 @@ int verificaQuantidadePalavras(char *entrada, int tamanhoStr){
     return quantidade;
 }
 
+void liberaMemoria(char **entradaSeparada, int quantidadePalavras) {
+    for (int i = 0; i < quantidadePalavras; i++) {
+        free(entradaSeparada[i]);
+    }
+    free(entradaSeparada);
+}
+
 int main(void){
-    char entrada[100];
-    fgets(entrada, 100, stdin);
+    char entrada[130];
+    fgets(entrada, 130, stdin);
 
-    int tamanhoStr = strlen(entrada);
-    int quantidadePalavras = verificaQuantidadePalavras(entrada, tamanhoStr);
+    char entradaSemVirgula[130];
+    retiraVirgula(entrada, entradaSemVirgula);
 
-   
+    int quantidadePalavras = verificaQuantidadePalavras(entradaSemVirgula);
+
     char *t;
-    char entradaSeparada[quantidadePalavras][30];
+    char **entradaSeparada;
+    entradaSeparada = malloc(sizeof(char*) * quantidadePalavras);
+    for (int i = 0; i < quantidadePalavras; i++) {
+        entradaSeparada[i] = malloc(sizeof(char) * 50);
+    }
 
-    t = strtok(entrada, " ");
-
+    t = strtok(entradaSemVirgula, " "); //pega string até chegar em um espaço
+    
     int i = 0;
-    while(i < quantidadePalavras){ 
+    while(t != NULL){
         strcpy(entradaSeparada[i], t);
-        t = strtok(NULL, " ");
+        //printf("%s \n", t);
+        t = strtok(NULL," ");
         i++;
     }
 
-    for (int i = 0; i < quantidadePalavras; i++){
-        printf("%s \n", entradaSeparada[i]);
+    mostraEntradaSeparada(entradaSeparada, quantidadePalavras); 
+    
+    int passouPeloFrom = 0;
+    char conteudoFrom[5][20];
+    int j = 0;
+    int k = 0;
+    while ( (strcmp(entradaSeparada[k], "where") != 0) || (entradaSeparada[k] == '\0') ){
+        if (passouPeloFrom){
+            strcpy(conteudoFrom[j], entradaSeparada[k]);
+            j++;
+        }
+        if (strcmp(entradaSeparada[k], "from") == 0){
+            passouPeloFrom = 1;
+        }
+        k++;
     }
-
-    //printf("%s", entradaSeparada[2]);
-    if (strcmp(entradaSeparada[0], "select") == 0){
-        printf("oi");
-    }
-    // se posicao == nome
+    
+    selecionaArquivo(conteudoFrom);
 }
 
 /*
@@ -78,8 +136,5 @@ arquivo[][] = {anoDatitulacap{{2002} {2003}}, codigo{1231afa},{} }
 
 AnodaTitulacao	CodigodoPPG	Nacionalidade	Nome	PaisdaInstituicao	Sexo
 2009	27001016029P4	BRASIL	EDILAYNE MENESES SALGUEIRO	BRASIL	FEMININO
-
-
-
 
 */
