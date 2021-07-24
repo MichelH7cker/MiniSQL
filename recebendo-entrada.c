@@ -2,54 +2,82 @@
 #include <stdlib.h>
 #include <string.h>
 
-void completaConteudoFrom(char **conteudoFrom){
-    for (int i = 0; i < 3; i++){
-        strcpy(conteudoFrom[i], "none");
-    }  
-}
-
-void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada){
-    int passouPeloFrom = 0;
-    int posicaoFrom = 0;
-    int posicaoEntrada = 0;
-    while ((strcmp(entradaSeparada[posicaoEntrada], "where") != 0) || (entradaSeparada[posicaoEntrada] == NULL) ){
-        if (passouPeloFrom){
-            strcpy(conteudoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
-            posicaoFrom++;
-        }
-        if (strcmp(entradaSeparada[posicaoEntrada], "from") == 0){
-            passouPeloFrom = 1;
-        }
-        posicaoEntrada++;
+void separadaEntrada(char *entradaSemVirgula, char **entradaSeparada){
+    char *t;
+    t = strtok(entradaSemVirgula, " "); // SELCIONA STRING ATÉ ESPAÇO
+    int i = 0;
+    while(t != NULL){
+        strcpy(entradaSeparada[i], t);
+        t = strtok(NULL," ");
+        //printf("%s \n", t);
+        i++;
     }
 }
 
-void selecionaArquivo(char **conteudoFrom){
-    for (int i = 0; i < 3; i++){
-        if (strcmp(conteudoFrom[i], "Progs") == 0){
-                    
-        } else if(strcmp(conteudoFrom[i], "Docentes") == 0){
-            //printf("entrei em docentes \n");
-    
-        } else if(strcmp(conteudoFrom[i], "Trabalhos") == 0){
-            //printf("entrei em trabalhos \n");
-        } else { //conteudoFrom não tem nada
-            //printf("entrei em nada \n");
+void completaConteudoFrom(char **conteudoFrom, int tamanhoConteudoFrom){
+    for (int i = 0; i < tamanhoConteudoFrom; i++){
+        strcpy(conteudoFrom[i], "none");
+        //printf("O conteudoFrom acabou de amarzenar: %s\n", conteudoFrom[i]);
+    }  
+}
+
+void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada, int quantidadePalavras){
+    int passouPeloFrom = 0;
+    int posicaoFrom = 0;
+    // entradaSeparada = select a b c from Progs
+    // conteudoFrom = none none none
+    for (int posicaoEntrada = 0; posicaoEntrada < quantidadePalavras; posicaoEntrada++){
+        if (strcmp(entradaSeparada[posicaoEntrada], "Where") == 0){
             break;
         }
+
+        if (passouPeloFrom){
+            strcpy(conteudoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
+            printf("O conteudoFrom acabou de armazenar: %s", conteudoFrom[posicaoFrom]);
+            posicaoFrom++;
+        }
+
+        if (strcmp(entradaSeparada[posicaoEntrada], "from") == 0){
+            passouPeloFrom = 1;
+        }
+        
+    } 
+}
+
+void selecionaArquivo(char **conteudoFrom, int tamanhoConteudoFrom){
+    for (int i = 0; i < tamanhoConteudoFrom; i++){
+        printf("O conteudo from em selciona arquivo e: %s\n", conteudoFrom[i]);
+        if (strcmp(conteudoFrom[i], "Progs") == 0){
+            printf("entrei Progs\n");
+        } else if(strcmp(conteudoFrom[i], "Docentes") == 0){
+            printf("entrei em docentes\n");
+    
+        } else if(strcmp(conteudoFrom[i], "Trabalhos") == 0){
+            printf("entrei em trabalhos \n");
+        } /*else { //conteudoFrom não tem nada
+            //printf("entrei em nada \n");
+            break;
+        }*/
         
     }
 }
 
-void retiraVirgula(char *entrada, char *entradaSemVirgula){    
+// TIRA VIRGULA E \n
+void filtraEntrada(char *entrada, char *entradaSemVirgula){ 
     int j = 0;
     for (int i = 0; entrada[i] != '\0'; i++){
+        if (entrada[i] == '\n'){
+            break;
+        }
+        
         if (entrada[i] != ','){ 
+            //strcpy(entradaSemVirgula[j], entrada[i]);
             entradaSemVirgula[j] = entrada[i];
             j++;
         }
     }
-    //entradaSemVirgula[j] = '\0';
+    //strcpy(entradaSemVirgula[j], '\0');
+    entradaSemVirgula[j] = '\0';
 }
 
 void mostraEntradaSeparada(char **entradaSeparada, int quantidadePalavras){
@@ -58,73 +86,74 @@ void mostraEntradaSeparada(char **entradaSeparada, int quantidadePalavras){
     }
 }
 
-int verificaQuantidadePalavras(char *entrada){
-    int quantidade = 1;
+int verificaQuantidadePalavras(char *entradaSemVirgula){
+    int quantidadePalavras = 1;
     int i = 0;
-    while (entrada[i] != '\0'){
-        if (entrada[i] == ' '){
-            quantidade++;
+    while (entradaSemVirgula[i] != '\0'){
+        if (entradaSemVirgula[i] == ' '){
+            quantidadePalavras++;
         } 
         i++;
     }
-    return quantidade;
+    return quantidadePalavras;
 }
 
-void liberaMemoria(char **entradaSeparada, int quantidadePalavras) {
-    for (int i = 0; i < quantidadePalavras; i++) {
-        free(entradaSeparada[i]);
+void liberaMemoria(char **matriz, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        free(matriz[i]);
     }
-    free(entradaSeparada);
+    free(matriz);
 }
 
 int main(void){
-    char entrada[130];
-    fgets(entrada, 130, stdin);
+    char entrada[100];
+    //gets(entrada);
+    //scanf("%s", entrada);
+    fgets(entrada, 100, stdin);
+    //strcat(entrada, " none");
+    char entradaSemVirgula[100];
     
-    char entradaSemVirgula[130];
-    retiraVirgula(entrada, entradaSemVirgula);
+    filtraEntrada(entrada, entradaSemVirgula);
+    //retiraQuebraDeLinhas(entrada,entradaSemVirgula);
 
     int quantidadePalavras = verificaQuantidadePalavras(entradaSemVirgula);
-    quantidadePalavras++;
-
+    
     // MALLOC
     char **entradaSeparada;
-    entradaSeparada = malloc(sizeof(char*) * (quantidadePalavras)); //malloc
+    entradaSeparada = malloc(sizeof(char*) * (quantidadePalavras));
     for (int i = 0; i < quantidadePalavras; i++) {
         entradaSeparada[i] = malloc(sizeof(char) * 50);
     }
     
-    char *t;
-    t = strtok(entradaSemVirgula, " "); // SELCIONA STRING ATÉ ESPAÇO
-    int i = 0;
-    while(t != NULL){
-        strcpy(entradaSeparada[i], t);
-        t = strtok(NULL," ");
-        i++;
-    }
-
     // MALLOC
     char **conteudoFrom;
-    conteudoFrom = malloc(sizeof(char*) * 3); //malloc
-    for (int i = 0; i < 3; i++) {
+    int tamanhoConteudoFrom = 4;
+    conteudoFrom = malloc(sizeof(char*) * tamanhoConteudoFrom); 
+    for (int i = 0; i < tamanhoConteudoFrom; i++) {
         conteudoFrom[i] = malloc(sizeof(char) * 50);
     }
-
-    strcpy(entradaSeparada[quantidadePalavras - 1], "none"); // ULTIMA POSIÇÃO COM
+    // from Progs Docentes none where
+    //strcpy(entradaSeparada[quantidadePalavras - 1], "none"); // ULTIMA POSIÇÃO COM
+    separadaEntrada(entradaSemVirgula, entradaSeparada);
     mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
-    completaConteudoFrom(conteudoFrom);
-    armazenaArquivosFrom(conteudoFrom, entradaSeparada);
-    selecionaArquivo(conteudoFrom);
+    completaConteudoFrom(conteudoFrom, tamanhoConteudoFrom);
+    armazenaArquivosFrom(conteudoFrom, entradaSeparada, quantidadePalavras);
+    selecionaArquivo(conteudoFrom, tamanhoConteudoFrom);
     liberaMemoria(entradaSeparada, quantidadePalavras);
+    liberaMemoria(conteudoFrom, tamanhoConteudoFrom);
 }
 
 /*
 
+- Alteramos a retira virgula, colcoamos strcpy
+- modificiamos o tamanho do conteudo from
+- Aumentamos uma condição no while do armzena arquivos from
+- Mudamos a posição dos ifs no armzena arquivos
+
 pegar cada palavra da entrada e adicionar em uma matriz
 cada possição corresponde a uma palavra.
-*/
 
-/*
+
 
 SELECT _____, _____ FROM _____, _____ WHERE comparação
 select Progs.Sigla, Progs.Nome from Progs where Progs.Nivel = "7"
