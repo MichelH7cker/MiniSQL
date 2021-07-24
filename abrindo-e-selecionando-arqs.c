@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include<string.h>
 
-#define INSTITUICAO 0;                      //
+/*#define INSTITUICAO 0;                      //
 #define PROGRAMA 1;                         //
 #define NIVEL 2;                            //
 #define SIGLA 3;                            //  Progs
@@ -21,7 +21,7 @@
 #define AUTOR 1;                            //
 #define CODIGOPPG 2;                        //  Trabalhos
 #define IDIOMA 3;                           //
-#define ORIENTADOR 4;                       //
+#define ORIENTADOR 4;*/                       //
 
 int encontraArq (char *arquivo) {
     if (arquivo == "Docentes") {
@@ -33,7 +33,7 @@ int encontraArq (char *arquivo) {
     return 5;
 }
 
-void impColuna(int colunaEntrada, char *arquivo){
+void imprimeColuna(int colunaEntrada, char *arquivo){
     FILE *pont_arq;
     char cursor;
     int tamanhoArq = encontraArq(arquivo);
@@ -74,16 +74,14 @@ void impColuna(int colunaEntrada, char *arquivo){
                 printf("\n"); 
             }          //serve pra quase todas as colunas, menos a ultima (da um enter a mais do que precisa)
         }
-
-        //printf("%c" , cursor);        
+        
     } while (cursor != EOF);//enquanto não for final de arquivo 
 
-
-    fclose(pont_arq);//fechando o arquivo
+    fclose(pont_arq);
 }
 
-int main(void) {
-    int coluna = 0;
-    char *arquivo = "Trabalhos";
-    impColuna(coluna, arquivo);
+int main (void) {
+    int coluna = 1;
+    char *arquivo = "Docentes";
+    imprimeColuna(coluna, arquivo);
 }

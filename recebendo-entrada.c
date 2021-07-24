@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/*
-typedef struct{
-    char siglas;
-    char idade;
-} Progs;
-
-*/
 
 void completaConteudoFrom(char **conteudoFrom){
     for (int i = 0; i < 3; i++){
@@ -19,7 +12,7 @@ void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada){
     int passouPeloFrom = 0;
     int posicaoFrom = 0;
     int posicaoEntrada = 0;
-    while ((strcmp(entradaSeparada[posicaoEntrada], "where") != 0) || (entradaSeparada[posicaoEntrada] == '\0') ){
+    while ((strcmp(entradaSeparada[posicaoEntrada], "where") != 0) || (entradaSeparada[posicaoEntrada] == NULL) ){
         if (passouPeloFrom){
             strcpy(conteudoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
             posicaoFrom++;
@@ -34,13 +27,14 @@ void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada){
 void selecionaArquivo(char **conteudoFrom){
     for (int i = 0; i < 3; i++){
         if (strcmp(conteudoFrom[i], "Progs") == 0){
-            //printf("entrei em Progs \n");
+                    
         } else if(strcmp(conteudoFrom[i], "Docentes") == 0){
             //printf("entrei em docentes \n");
+    
         } else if(strcmp(conteudoFrom[i], "Trabalhos") == 0){
             //printf("entrei em trabalhos \n");
         } else { //conteudoFrom não tem nada
-            printf("entrei em nada \n");
+            //printf("entrei em nada \n");
             break;
         }
         
@@ -55,12 +49,12 @@ void retiraVirgula(char *entrada, char *entradaSemVirgula){
             j++;
         }
     }
-    entradaSemVirgula[j] = '\0';
+    //entradaSemVirgula[j] = '\0';
 }
 
 void mostraEntradaSeparada(char **entradaSeparada, int quantidadePalavras){
     for (int i = 0; i < quantidadePalavras; i++){
-        printf("%s \n", entradaSeparada[i]);
+        printf("%s\n", entradaSeparada[i]);
     }
 }
 
@@ -86,30 +80,28 @@ void liberaMemoria(char **entradaSeparada, int quantidadePalavras) {
 int main(void){
     char entrada[130];
     fgets(entrada, 130, stdin);
-
+    
     char entradaSemVirgula[130];
     retiraVirgula(entrada, entradaSemVirgula);
 
     int quantidadePalavras = verificaQuantidadePalavras(entradaSemVirgula);
+    quantidadePalavras++;
 
     // MALLOC
     char **entradaSeparada;
-    entradaSeparada = malloc(sizeof(char*) * quantidadePalavras); //malloc
+    entradaSeparada = malloc(sizeof(char*) * (quantidadePalavras)); //malloc
     for (int i = 0; i < quantidadePalavras; i++) {
         entradaSeparada[i] = malloc(sizeof(char) * 50);
     }
-
+    
     char *t;
-    t = strtok(entradaSemVirgula, " "); //pega string até chegar em um espaço
+    t = strtok(entradaSemVirgula, " "); // SELCIONA STRING ATÉ ESPAÇO
     int i = 0;
     while(t != NULL){
         strcpy(entradaSeparada[i], t);
-        //printf("%s \n", t);
         t = strtok(NULL," ");
         i++;
     }
-
-    mostraEntradaSeparada(entradaSeparada, quantidadePalavras); 
 
     // MALLOC
     char **conteudoFrom;
@@ -118,9 +110,12 @@ int main(void){
         conteudoFrom[i] = malloc(sizeof(char) * 50);
     }
 
+    strcpy(entradaSeparada[quantidadePalavras - 1], "none"); // ULTIMA POSIÇÃO COM
+    mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
     completaConteudoFrom(conteudoFrom);
     armazenaArquivosFrom(conteudoFrom, entradaSeparada);
     selecionaArquivo(conteudoFrom);
+    liberaMemoria(entradaSeparada, quantidadePalavras);
 }
 
 /*
