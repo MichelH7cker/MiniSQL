@@ -9,7 +9,6 @@ void separadaEntrada(char *entradaSemVirgula, char **entradaSeparada){
     while(t != NULL){
         strcpy(entradaSeparada[i], t);
         t = strtok(NULL," ");
-        //printf("%s \n", t);
         i++;
     }
 }
@@ -17,23 +16,22 @@ void separadaEntrada(char *entradaSemVirgula, char **entradaSeparada){
 void completaConteudoFrom(char **conteudoFrom, int tamanhoConteudoFrom){
     for (int i = 0; i < tamanhoConteudoFrom; i++){
         strcpy(conteudoFrom[i], "none");
-        //printf("O conteudoFrom acabou de amarzenar: %s\n", conteudoFrom[i]);
     }  
 }
 
-void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada, int quantidadePalavras){
+void armazenaArquivosFrom(char **conteudoFrom, char **entradaSeparada, int tamanhoConteudoFrom){
     int passouPeloFrom = 0;
     int posicaoFrom = 0;
-    // entradaSeparada = select a b c from Progs
-    // conteudoFrom = none none none
-    for (int posicaoEntrada = 0; posicaoEntrada < quantidadePalavras; posicaoEntrada++){
-        if (strcmp(entradaSeparada[posicaoEntrada], "Where") == 0){
+
+    for (int posicaoEntrada = 0; posicaoFrom < tamanhoConteudoFrom; posicaoEntrada++){
+        if (strcmp(entradaSeparada[posicaoEntrada], "where") == 0){
+            printf("entrou no where\n");
             break;
         }
 
         if (passouPeloFrom){
             strcpy(conteudoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
-            printf("O conteudoFrom acabou de armazenar: %s", conteudoFrom[posicaoFrom]);
+            printf("O conteudoFrom acabou de armazenar: %s\n", conteudoFrom[posicaoFrom]);
             posicaoFrom++;
         }
 
@@ -51,14 +49,11 @@ void selecionaArquivo(char **conteudoFrom, int tamanhoConteudoFrom){
             printf("entrei Progs\n");
         } else if(strcmp(conteudoFrom[i], "Docentes") == 0){
             printf("entrei em docentes\n");
-    
-        } else if(strcmp(conteudoFrom[i], "Trabalhos") == 0){
+        } else if (strcmp(conteudoFrom[i], "Trabalhos") == 0){
             printf("entrei em trabalhos \n");
-        } /*else { //conteudoFrom não tem nada
-            //printf("entrei em nada \n");
+        } else { //quando não tem mais arquivos
             break;
-        }*/
-        
+        }
     }
 }
 
@@ -71,12 +66,10 @@ void filtraEntrada(char *entrada, char *entradaSemVirgula){
         }
         
         if (entrada[i] != ','){ 
-            //strcpy(entradaSemVirgula[j], entrada[i]);
             entradaSemVirgula[j] = entrada[i];
             j++;
         }
     }
-    //strcpy(entradaSemVirgula[j], '\0');
     entradaSemVirgula[j] = '\0';
 }
 
@@ -107,15 +100,9 @@ void liberaMemoria(char **matriz, int tamanho) {
 
 int main(void){
     char entrada[100];
-    //gets(entrada);
-    //scanf("%s", entrada);
     fgets(entrada, 100, stdin);
-    //strcat(entrada, " none");
     char entradaSemVirgula[100];
-    
     filtraEntrada(entrada, entradaSemVirgula);
-    //retiraQuebraDeLinhas(entrada,entradaSemVirgula);
-
     int quantidadePalavras = verificaQuantidadePalavras(entradaSemVirgula);
     
     // MALLOC
@@ -132,12 +119,11 @@ int main(void){
     for (int i = 0; i < tamanhoConteudoFrom; i++) {
         conteudoFrom[i] = malloc(sizeof(char) * 50);
     }
-    // from Progs Docentes none where
-    //strcpy(entradaSeparada[quantidadePalavras - 1], "none"); // ULTIMA POSIÇÃO COM
+
     separadaEntrada(entradaSemVirgula, entradaSeparada);
     mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
     completaConteudoFrom(conteudoFrom, tamanhoConteudoFrom);
-    armazenaArquivosFrom(conteudoFrom, entradaSeparada, quantidadePalavras);
+    armazenaArquivosFrom(conteudoFrom, entradaSeparada, tamanhoConteudoFrom);
     selecionaArquivo(conteudoFrom, tamanhoConteudoFrom);
     liberaMemoria(entradaSeparada, quantidadePalavras);
     liberaMemoria(conteudoFrom, tamanhoConteudoFrom);

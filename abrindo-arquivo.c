@@ -15,7 +15,6 @@ int main(void){
     //Faça 
     do{  
         //faz a leitura do caracter no arquivo apontado por pont_arq
-        
         c = fgetc(pont_arq);
         if (c == 'Nacionalidade'){
             printf("oi");
