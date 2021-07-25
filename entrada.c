@@ -84,9 +84,17 @@ void armazenaConteudoSelect(char **conteudoSelect, char **entradaSeparada, int t
 }
 
 void armazenaConteudoWhere(char **conteudoWhere, char **entradaSeparada, int tamanhoConteudoWhere, int quantidadePalavras){
-    //from a b c where alguma coisa alguma coisa
     int posicaoWhere = 0;
-    for (int i = 0; i < quantidadePalavras; i++){
+    int passouPeloWhere = 0;
+    for (int posicaoEntrada = 0; posicaoEntrada < quantidadePalavras; posicaoEntrada++){
+        if(passouPeloWhere){
+            strcpy(conteudoWhere[posicaoWhere], entradaSeparada[posicaoEntrada]);
+            printf("O conteudo where vale: %s\n", conteudoWhere[posicaoWhere]);
+            posicaoWhere++;
+        }
+        if ((strcmp(entradaSeparada[posicaoEntrada], "where")) == 0){
+            passouPeloWhere = 1;
+        }
         
     }
 }
