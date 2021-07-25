@@ -17,7 +17,7 @@ struct {
     int Nacionalidade;          //  Arquivo Docentes.tsv
     int Nome;                   //
     int PaisdaInstituicao;      //
-    int Sexo;
+    int Sexo;                   //
 } Docentes;
 
 struct {
