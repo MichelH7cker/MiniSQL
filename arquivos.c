@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "saida.h"
+#include "liberaMemorias.h"
 
 #define COLUNASPROGS 7       //
 #define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
