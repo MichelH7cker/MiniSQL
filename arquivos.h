@@ -30,8 +30,14 @@ struct {
 
 void selecionaArquivos(char **conteudoFrom, int tamanhoConteudoFrom, char **arquivo);
 
-int escolheColunas(char **conteudoArray, int tamanhoArray, char **arquivo);
+void abreArquivo();
 
-void imprimeColuna(int colunaEntrada, char **arquivo);
+int escolheColunas(char **conteudoArray, int tamanhoArray, char **arquivo, int *colunaSelecionada, int *selectAtual); 
+/*
+ * Essa função está funcionando
+ * apenas para uma coluna
+*/
+
+void imprimeColuna(int *colunaEntrada, char **arquivo);
 
 #endif

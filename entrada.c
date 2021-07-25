@@ -18,7 +18,7 @@ void filtraEntrada(char *entrada, char *entradaSemVirgula){
     entradaSemVirgula[j] = '\0';
 }
 
-int verificaQuantidadePalavras(char *entradaSemVirgula){
+int verificaQuantidadePalavrasTotal(char *entradaSemVirgula){
     int quantidadePalavras = 1;
     int i = 0;
     while (entradaSemVirgula[i] != '\0'){
@@ -28,6 +28,26 @@ int verificaQuantidadePalavras(char *entradaSemVirgula){
         i++;
     }
     return quantidadePalavras;
+}
+
+int verificaQuantidadePalavras(int quantidadePalavras, char **entradaSeparada, char **string){
+    int i = 0;
+    char limite = "limite";
+
+    if(strcmp(string, "select") == 0){
+        strcpy(limite, "where");
+
+    } else if(strcmp(string, "from") == 0){
+        strcpy(limite, "from");
+
+    } else {
+        strcpy(limite, "where");
+    }
+
+    for (int i = 0; i < limite; i++){
+
+    }
+    
 }
 
 void separaEntrada(char *entradaSemVirgula, char **entradaSeparada){

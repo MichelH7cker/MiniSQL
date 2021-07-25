@@ -4,20 +4,28 @@
 
 #include "entrada.h"
 #include "arquivos.h"
+#include "comparacao.h"
+#include "saida.h"
+
 
 int main(){
     char entrada[100];
     fgets(entrada, 100, stdin);
     char entradaSemVirgula[100];
-
     filtraEntrada(entrada, entradaSemVirgula);
-    int quantidadePalavras = verificaQuantidadePalavras(entradaSemVirgula);
-    
+
+    int quantidadePalavras = verificaQuantidadePalavrasTotal(entradaSemVirgula);
+
     char **entradaSeparada;                                             //
     entradaSeparada = malloc(sizeof(char*) * (quantidadePalavras));     // ALOCA MEMÓRIA PARA
     for (int i = 0; i < quantidadePalavras; i++) {                      // entradaSeparada
         entradaSeparada[i] = malloc(sizeof(char) * 50);                 //
     }                                                                   //
+    
+    separaEntrada(entradaSemVirgula, entradaSeparada);
+    int tamanhoConteudoSelect = verificaQuantidadePalavras(quantidadePalavras, entradaSeparada, "select");
+    int tamanhoConteudoFrom = verificaQuantidadePalavras(quantidadePalavras, entradaSeparada, "from");
+    int tamanhoConteudoWhere = verificaQuantidadePalavras(quantidadePalavras, entradaSeparada, "where");                                                          //
 
     char **conteudoFrom;                                                //
     int tamanhoConteudoFrom = 4;                                        //
@@ -54,10 +62,10 @@ int main(){
         saida[i] = malloc(sizeof(char) * 50);                           //
     }                                                                   //
 
-    int coluna;  
+    int colunaSelecionada;  
     // transformar num array e fazer um contandor na entrada no select
 
-    separaEntrada(entradaSemVirgula, entradaSeparada);
+    
     mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
 
     completaConteudoArray (conteudoFrom, tamanhoConteudoFrom);                                           //                     
@@ -67,12 +75,15 @@ int main(){
     completaConteudoArray (conteudoWhere, tamanhoConteudoWhere);                                         //
     armazenaConteudoWhere (conteudoWhere, entradaSeparada, tamanhoConteudoWhere, quantidadePalavras);    //                                                                 
 
-    selecionaArquivos(conteudoFrom, tamanhoConteudoFrom, arquivo); 
-    coluna = escolheColunas(conteudoSelect, tamanhoConteudoSelect, arquivo);
-    printf("a coluna é: %d \n", coluna);
-    // SEMPRE VERIFICAR SE O DICIONÁRIO ESTÁ CERTO
-    imprimeColuna(coluna, arquivo);
+    //Select campo1, campo2, campo3
+    for (int selectAtual = 0; selectAtual < tamanhoConteudoSelect; selectAtual++){
+        selecionaArquivos(conteudoFrom, tamanhoConteudoFrom, arquivo);  //retorna qual arquivo abrir
+        escolheColunas(conteudoSelect, tamanhoConteudoSelect, arquivo, &colunaSelecionada, &selectAtual);
+        //abreArquivo(colunaSelecionada, arquivo);
+        imprimeColuna(&colunaSelecionada, arquivo);
+    }
 
+    // SEMPRE VERIFICAR SE O DICIONÁRIO ESTÁ CERTO
     liberaMemoria(entradaSeparada, quantidadePalavras);     //                          //
     liberaMemoria(conteudoFrom, tamanhoConteudoFrom);       //                          //
     liberaMemoria(conteudoSelect, tamanhoConteudoSelect);   //      LIBERA MEMÓRIA      //

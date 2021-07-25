@@ -1,3 +1,3 @@
-/*
- * Fazer o código
- */
+void constroiArquivoSaida(){
+    
+}

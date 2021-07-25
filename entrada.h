@@ -8,7 +8,9 @@ void filtraEntrada(char *entrada, char *entradaSemVirgula);
  * (surgem por causa do fgets)
  */
 
-int verificaQuantidadePalavras(char *entradaSemVirgula);
+int verificaQuantidadePalavrasTotal(char *entradaSemVirgula);
+
+int verificaQuantidadePalavras(int quantidadePalavras, char **entradaSeparada, char **string);
 
 void separaEntrada(char *entradaSemVirgula, char **entradaSeparada);
 /*
