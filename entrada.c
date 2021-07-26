@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+ 
+#define LINHASAIDA 101    // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
-// TIRA VIRGULA E \n
 void filtraEntrada(char *entrada, char *entradaSemVirgula){ 
     int j = 0;
     for (int i = 0; entrada[i] != '\0'; i++){
@@ -32,7 +33,6 @@ int verificaQuantidadePalavrasTotal(char *entradaSemVirgula){
 
 int verificaQuantidadePalavrasSelect(char **entradaSeparada){
     int quantidadePalavrasSelect = 0;
-    //select a b from
     for (int i = 1; 1; i++){
         if ((strcmp(entradaSeparada[i], "from")) == 0){
             return quantidadePalavrasSelect;
@@ -43,7 +43,6 @@ int verificaQuantidadePalavrasSelect(char **entradaSeparada){
 
 int verificaQuantidadePalavrasFrom(int quantidadePalavras, char **entradaSeparada){
     int posicaoFrom;
-    //select a b c from a b c
     for (int i = 0; ; i++){
         if (strcmp(entradaSeparada[i], "from") == 0){
             posicaoFrom = i;
@@ -94,7 +93,7 @@ void mostraEntradaSeparada(char **entradaSeparada, int quantidadePalavras){
 
 void completaConteudoArray(char **array, int tamanhoArray){
     for (int i = 0; i < tamanhoArray; i++){
-        strcpy(array[i], "none");
+        strcpy(array[i], "-");
     }  
 }
 
@@ -143,7 +142,6 @@ void armazenaConteudoWhere(char **conteudoWhere, char **entradaSeparada, int tam
         
     }
 }
-//Aqui tinha a função "abreArquivos" que está no arquivo: "abrindo-e-selecionando-arqs.c"
 
 void liberaMemoria(char **matriz, int tamanho) {
     for (int i = 0; i < tamanho; i++) {
@@ -151,30 +149,3 @@ void liberaMemoria(char **matriz, int tamanho) {
     }
     free(matriz);
 }
-
-/*
-pegar cada palavra da entrada e adicionar em uma matriz
-cada possição corresponde a uma palavra.
-
-SELECT _____, _____ FROM _____, _____ WHERE comparação
-select Progs.Sigla, Progs.Nome from Progs where Progs.Nivel = "7"
-
-===================== CASO 1 =====================
-
-.in:    select Progs.Sigla, Progs.Nome from Progs where Progs.Nivel = "7"
-.out:   UFPE-CC-7	    CIENCIAS DA COMPUTACAO
-        UFRJ-ESC-7	    ENGENHARIA DE SISTEMAS E COMPUTACAO
-        PUC-RIO-I-7	    INFORMATICA
-        UFMG-CC-7	    CIENCIAS DA COMPUTACAO
-        USP-SC-CCMC-7	CIENCIAS DA COMPUTACAO E MATEMATICA COMPUTACIONAL
-        UNICAMP-CC-7	CIENCIA DA COMPUTACAO
-        UFRGS-C-7	    COMPUTACAO
-
-=================================================
-
-arquivo[][] = {anoDatitulacap{{2002} {2003}}, codigo{1231afa},{} }
-
-AnodaTitulacao	CodigodoPPG	Nacionalidade	Nome	PaisdaInstituicao	Sexo
-2009	27001016029P4	BRASIL	EDILAYNE MENESES SALGUEIRO	BRASIL	FEMININO
-
-*/

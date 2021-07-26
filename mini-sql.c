@@ -7,6 +7,13 @@
 #include "comparacao.h"
 #include "saida.h"
 
+#define COLUNASPROGS 7       //
+#define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
+#define COLUNASTRABALHOS 5   //
+
+#define LINHASAIDA 101       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
+
+
 int main(){
     char entrada[100];
     fgets(entrada, 100, stdin);
@@ -27,12 +34,12 @@ int main(){
     int tamanhoConteudoFrom   = verificaQuantidadePalavrasFrom(quantidadePalavras, entradaSeparada);
     int tamanhoConteudoWhere  = verificaQuantidadePalavrasWhere(quantidadePalavras, tamanhoConteudoSelect, tamanhoConteudoFrom); 
                                                    
-    /*
-    char **conteudoWhere;                                            
+    
+    /*char **conteudoWhere;                                            
     conteudoWhere = malloc(sizeof(char*) * tamanhoConteudoWhere);        
     for (int i = 0; i < tamanhoConteudoWhere; i++) {                    
         conteudoWhere[i] = malloc(sizeof(char) * 50);                   
-    }      */                                                           
+    }*/                                                           
     
     char **arquivo;                                                   
     int tamanhoArquivo = 1;                                        
@@ -42,62 +49,61 @@ int main(){
     }                                                                  
 
     char ***saida; //101
-    saida = malloc(sizeof(char**) * 102); // Linhas
-    for (int i = 0; i < 102; i++) {
+    saida = malloc(sizeof(char**) * LINHASAIDA); // Linhas
+    for (int i = 0; i < LINHASAIDA; i++) {
         saida[i] = malloc(sizeof(char*) * tamanhoConteudoSelect); // Colunas
         for (int t = 0; t < tamanhoConteudoSelect; t++) {
-            saida[i][t] = malloc(sizeof(char) * 100); //Chars
+            saida[i][t] = malloc(sizeof(char) * 100); //Char
         }
     }
-    preencheComNone(saida, tamanhoConteudoSelect);
 
-    int colunaSelecionada;  
-    // transformar num array e fazer um contandor na entrada no select
+    ocupaConteudoSaida(saida, tamanhoConteudoSelect);
     
-    mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
+    //mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
     
     //completaConteudoArray (conteudoWhere, tamanhoConteudoWhere);                                        
     //armazenaConteudoWhere (conteudoWhere, entradaSeparada, tamanhoConteudoWhere, quantidadePalavras);                                                                    
     //iberaMemoria(conteudoWhere, tamanhoConteudoWhere);     
     
+    int colunaEscolhida;
     int posicaoFrom = 0;
     int colunaAtualMatriz = 0;
+    char ordemSaida[tamanhoConteudoFrom][30];
     for (int selectAtual = 0; selectAtual < tamanhoConteudoSelect; selectAtual++){
-        char **conteudoFrom;                                           
-        conteudoFrom = malloc(sizeof(char*) * tamanhoConteudoFrom);   
-        for (int i = 0; i < tamanhoConteudoFrom; i++) {conteudoFrom[i] = malloc(sizeof(char) * 20);}
-        completaConteudoArray(conteudoFrom, tamanhoConteudoFrom);                                                                
-        armazenaConteudoFrom(conteudoFrom, entradaSeparada, tamanhoConteudoFrom, quantidadePalavras);
-        selecionaArquivos(conteudoFrom, tamanhoConteudoFrom, arquivo, posicaoFrom);  
-        liberaMemoria(conteudoFrom, tamanhoConteudoFrom);
-
-        if ((strcmp(arquivo[0], "none")) == 0){ break;}
-
-        char **conteudoSelect;                                          
-        conteudoSelect = malloc(sizeof(char*) * tamanhoConteudoSelect);       
-        for (int i = 0; i < tamanhoConteudoSelect; i++) {conteudoSelect[i] = malloc(sizeof(char) * 30);}   
+        char **conteudoSelect;                                              //                                                             
+        conteudoSelect = malloc(sizeof(char*) * tamanhoConteudoSelect);     //  
+        for (int i = 0; i < tamanhoConteudoSelect; i++) {                   // MALLOC
+            conteudoSelect[i] = malloc(sizeof(char) * 30);                  //
+        }                                                                   //
+                                                                      
         completaConteudoArray (conteudoSelect, tamanhoConteudoSelect);                                      
         armazenaConteudoSelect(conteudoSelect, entradaSeparada, tamanhoConteudoSelect);
-        escolheColunas(conteudoSelect, tamanhoConteudoSelect, arquivo, &colunaSelecionada, &selectAtual);
+
+        selecionaArquivoColuna(conteudoSelect, tamanhoConteudoSelect, arquivo, selectAtual, &colunaEscolhida);
         liberaMemoria(conteudoSelect, tamanhoConteudoSelect);
 
-        printf("A COLUNA SELECIONADA E: %d\n", colunaSelecionada);
-        printf("A coluna atual da matriz é: %d\n", colunaAtualMatriz);
+        char **conteudoFrom;                                           
+        conteudoFrom = malloc(sizeof(char*) * tamanhoConteudoFrom);   
+        for (int i = 0; i < tamanhoConteudoFrom; i++) { 
+            conteudoFrom[i] = malloc(sizeof(char) * 20);
+        }
+        completaConteudoArray(conteudoFrom, tamanhoConteudoFrom);                                                                
+        armazenaConteudoFrom(conteudoFrom, entradaSeparada, tamanhoConteudoFrom, quantidadePalavras);
+        liberaMemoria(conteudoFrom, tamanhoConteudoFrom);
+        
+        if (strcmp(arquivo[0], "none") == 0) break; 
 
-        abreArquivo(colunaSelecionada, arquivo, saida, colunaAtualMatriz);
+        abreArquivo(colunaEscolhida, arquivo, saida, colunaAtualMatriz);
 
-        printf("voltei no for principal\n");
-        printf("A coluna da matriz valia %d\n", colunaAtualMatriz);
         colunaAtualMatriz++;
-        printf("A coluna passou a valer %d\n", colunaAtualMatriz);
         posicaoFrom++;
-
     }
-    liberaMemoria(entradaSeparada, quantidadePalavras);
-    mostraMatriz(saida, tamanhoConteudoSelect);
-    //imprimeSaida(&colunaSelecionada, arquivo);                                                   
-    liberaMemoria(arquivo, tamanhoArquivo);                      
-    liberaMemoriaRobusta(saida, tamanhoConteudoSelect);                            
+
+    imprimeMatriz(saida, tamanhoConteudoSelect);
+
+    liberaMemoria(entradaSeparada, quantidadePalavras);    //
+    liberaMemoria(arquivo, tamanhoArquivo);                // DESALOCAÇÃO      
+    liberaMemoriaRobusta(saida, tamanhoConteudoSelect);    //                        
 }
 
 /* 
