@@ -10,7 +10,7 @@
  */
 void abreArquivo(int colunaSelecionada, char **arquivo, char ***saida, const int colunaAtualMatriz);
 
-void preencheSaida(char ***saida, const int colunaSelecionada, const FILE *pArquivo, const int colunaAtualMatriz);
+void preencheSaida(char ***saida, const int *colunaSelecionada, FILE *pArquivo, const int colunaAtualMatriz);
 
 void preencheComNone(char ***saida, int tamanhoConteudoSelect);
 

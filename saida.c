@@ -9,13 +9,14 @@
 #define COLUNASDOCENTES  6   // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
 
-void preencheSaida(char ***saida, const int colunaSelecionada, const FILE *pArquivo, const int colunaAtualMatriz){
+void preencheSaida(char ***saida, const int *colunaSelecionada, FILE *pArquivo, const int colunaAtualMatriz){
     int acumuladorTabs   = 0;
     int acumuladorLinhas = 0;
     //int idColunaInicial  = colunaSelecionada; 
     char cursor;
     char texto[20];
     do{
+        //char *str, int tamanho,FILE *fp
         cursor = fgetc(pArquivo); //ler uma palavra por vez seria melhor?
         if (cursor == '\t'){ 
             acumuladorTabs++;
@@ -25,7 +26,7 @@ void preencheSaida(char ***saida, const int colunaSelecionada, const FILE *pArqu
             acumuladorLinhas++;
         }
 
-        if (acumuladorTabs == colunaSelecionada){
+        if (acumuladorTabs == *colunaSelecionada){
             fscanf(cursor, "%s", texto);
             strcpy(saida[acumuladorLinhas][colunaAtualMatriz], cursor);
         }
@@ -36,7 +37,7 @@ void preencheSaida(char ***saida, const int colunaSelecionada, const FILE *pArqu
 void abreArquivo(int colunaSelecionada, char **arquivo, char ***saida, const int colunaAtualMatriz){
     FILE *pArquivo;
     char cursor;
-    int tamanhoColuna = encontraArquivo(arquivo);
+    //int tamanhoColuna = encontraArquivo(arquivo);
     
     if ((strcmp(arquivo[0], "Progs")) == 0){
         pArquivo = fopen("progs.tsv", "r");
