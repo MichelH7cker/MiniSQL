@@ -10,7 +10,11 @@ void filtraEntrada(char *entrada, char *entradaSemVirgula);
 
 int verificaQuantidadePalavrasTotal(char *entradaSemVirgula);
 
-int verificaQuantidadePalavras(int quantidadePalavras, char **entradaSeparada, char **string);
+int verificaQuantidadePalavrasSelect(char **entradaSeparada);
+
+int verificaQuantidadePalavrasFrom(int quantidadePalavras, char **entradaSeparada);
+
+int verificaQuantidadePalavrasWhere(int quantidadePalavras, int quantidadePalavrasSelect, int quantidadePalavrasFrom);
 
 void separaEntrada(char *entradaSemVirgula, char **entradaSeparada);
 /*
