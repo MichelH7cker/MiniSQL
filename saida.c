@@ -53,6 +53,7 @@ void abreArquivo(int colunaSelecionada, char **arquivo, char ***saida, const int
     }   
 
     preencheSaida(saida, &colunaSelecionada, pArquivo, colunaAtualMatriz);
+    fclose(pArquivo);
 }
 
 void preencheComNone(char ***saida, int tamanhoConteudoSelect){
