@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "saida.h"
-#include "liberaMemorias.h"
 
 #define COLUNASPROGS 7       //
 #define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
@@ -19,32 +18,7 @@ int encontraArquivo(char **arquivo) {
     return COLUNASTRABALHOS;
 }
 
-void abreArquivo(int colunaEntrada, char **arquivo){
-    FILE *pArquivo;
-    char cursor;
-    int tamanhoColuna = encontraArquivo(arquivo);
-    
-    if (tamanhoColuna == COLUNASPROGS){
-        pArquivo = fopen("progs.tsv", "r");
-        
-
-    } else if (tamanhoColuna == COLUNASTRABALHOS) {
-        pArquivo = fopen("Trabalhos.tsv","r");
-
-    }
-    else {
-        pArquivo = fopen("Docentes.tsv","r");
-
-    }
-    
-    if (pArquivo == NULL){
-        printf("Erro ao tentar abrir o arquivo!");
-        exit(-1);
-    }   
-
-}
-
-void imprimeColuna(int *colunaEntrada, char **arquivo){
+void imprimeSaida(int *colunaEntrada, char **arquivo){
     FILE *pArquivo;
     char cursor;
     int tamanhoArquivo = encontraArquivo(arquivo);
@@ -94,24 +68,19 @@ void percorreCabecalho(char cabecalho[][100], char **conteudoSelect, int tamanho
     for (int indiceCabecalho = 0; indiceCabecalho < COLUNASDOCENTES; indiceCabecalho++){
         if (strcmp(conteudoSelect[**selectAtual], cabecalho[indiceCabecalho]) == 0){
             **colunaSelecionada = indiceCabecalho;
-            printf("a coluna selecionada foi: %d\n", **colunaSelecionada);
         }
-        
     }
-    
 }
 
-int escolheColunas(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int *colunaSelecionada, int *selectAtual){
+void escolheColunas(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int *colunaSelecionada, int *selectAtual){
     char cabecalhoProgs[COLUNASPROGS][100] = {{"Progs.Instituicao"}, {"Progs.Programa"}, {"Progs.Nivel"}, {"Progs.Sigla"}, {"Progs.TemDoutorado"}, {"Progs.Nome"}, {"Progs.AreadeAvaliacao"}};
     char cabecalhoDocentes[COLUNASDOCENTES][100] = {{"Docentes.AnodaTitulacao"}, {"Docentes.CodigoPPG"}, {"Docentes.Nacionalidade"}, {"Docentes.Nome"}, {"Docentes.PaisdaInstituicao"}, {"Docentes.Sexo"}};
     char cabecalhoTrabalhos[COLUNASTRABALHOS][100] = {{"Trabalhos.Ano"}, {"Trabalhos.Autor"}, {"Trabalhos.CodigoPPG"}, {"Trabalhos.Idioma"}, {"Trabalhos.Orientador"}};    
-
 
     if ((strcmp(arquivo[0], "Docentes")) == 0){
         percorreCabecalho(cabecalhoDocentes, conteudoSelect, tamanhoConteudoSelect, &colunaSelecionada, &selectAtual); 
     
     } else if (strcmp(arquivo[0], "Progs") == 0){
-        printf("entrei no if do Progs \n");
         percorreCabecalho(cabecalhoProgs, conteudoSelect, tamanhoConteudoSelect, &colunaSelecionada, &selectAtual);
 
     } else {
@@ -120,20 +89,19 @@ int escolheColunas(char **conteudoSelect, int tamanhoConteudoSelect, char **arqu
     
 }
 
-void selecionaArquivos(char **conteudoFrom, int tamanhoConteudoFrom, char **arquivo){
-    for (int i = 0; i < tamanhoConteudoFrom; i++){
-        printf("\n");
-        if(strcmp(conteudoFrom[i], "Docentes") == 0){
-            strcpy(arquivo[0], "Docentes");
+void selecionaArquivos(char **conteudoFrom, int tamanhoConteudoFrom, char **arquivo, int posicaoFrom){
+    printf("\n");
+    if(strcmp(conteudoFrom[posicaoFrom], "Docentes") == 0){
+        strcpy(arquivo[0], "Docentes");
 
-        } else if (strcmp(conteudoFrom[i], "Progs") == 0){
-            strcpy(arquivo[0], "Progs");
+    } else if (strcmp(conteudoFrom[posicaoFrom], "Progs") == 0){
+        strcpy(arquivo[0], "Progs");
 
-        } else if (strcmp(conteudoFrom[i], "Trabalhos") == 0){
-            strcpy(arquivo[0], "Trabalhos");
+    } else if (strcmp(conteudoFrom[posicaoFrom], "Trabalhos") == 0){
+        strcpy(arquivo[0], "Trabalhos");
 
-        } else { //quando não tem mais arquivos
-            break;
-        }
-    }
+    } else { //quando não tem mais arquivos
+        strcpy(arquivo[0], "none");
+    } 
 }
+

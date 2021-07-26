@@ -30,24 +30,49 @@ int verificaQuantidadePalavrasTotal(char *entradaSemVirgula){
     return quantidadePalavras;
 }
 
-int verificaQuantidadePalavras(int quantidadePalavras, char **entradaSeparada, char **string){
-    int i = 0;
-    char limite = "limite";
+int verificaQuantidadePalavrasSelect(char **entradaSeparada){
+    int quantidadePalavrasSelect = 0;
+    //select a b from
+    for (int i = 1; 1; i++){
+        if ((strcmp(entradaSeparada[i], "from")) == 0){
+            return quantidadePalavrasSelect;
+        }
+        quantidadePalavrasSelect++;
+    }
+}
 
-    if(strcmp(string, "select") == 0){
-        strcpy(limite, "where");
-
-    } else if(strcmp(string, "from") == 0){
-        strcpy(limite, "from");
-
-    } else {
-        strcpy(limite, "where");
+int verificaQuantidadePalavrasFrom(int quantidadePalavras, char **entradaSeparada){
+    int posicaoFrom;
+    //select a b c from a b c
+    for (int i = 0; ; i++){
+        if (strcmp(entradaSeparada[i], "from") == 0){
+            posicaoFrom = i;
+            break;
+        }
     }
 
-    for (int i = 0; i < limite; i++){
+    for (int i = posicaoFrom; i < quantidadePalavras; i++){
+        if ((strcmp(entradaSeparada[i], "where")) == 0){
+            return i - posicaoFrom - 1;
 
+        } else if (i == quantidadePalavras - 1){
+            return quantidadePalavras - posicaoFrom - 1;
+        }
+    }
+
+}
+
+int verificaQuantidadePalavrasWhere(int quantidadePalavras, int quantidadePalavrasSelect, int quantidadePalavrasFrom){
+    int quantidadePalavrasWhere = quantidadePalavras - quantidadePalavrasFrom - quantidadePalavrasSelect - 2;
+
+    if (quantidadePalavrasWhere != 0){
+        return quantidadePalavrasWhere - 1;
+    } else {
+        return quantidadePalavrasWhere;
     }
     
+    
+    return quantidadePalavras - quantidadePalavrasFrom - quantidadePalavrasSelect - 2;
 }
 
 void separaEntrada(char *entradaSemVirgula, char **entradaSeparada){

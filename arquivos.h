@@ -28,16 +28,29 @@ struct {
     int Orientador;             //
 } Trabalhos;
 
-void selecionaArquivos(char **conteudoFrom, int tamanhoConteudoFrom, char **arquivo);
+/**
+ * Função para visualização e saída
+ * @param conteudoFrom array que guarda todas as informações do Select
+ * @param tamanhoConteudoFrom quantidade de palavras que existe no conteudoSelect
+ * @param arquivo carrega o arquivo a ser aberto
+ * @param posicaoFrom
+ */
+void selecionaArquivos(char **conteudoFrom, int tamanhoConteudoFrom, char **arquivo, int posicaoFrom);
 
-void abreArquivo();
+/**
+ * @param conteudoSelect array que guarda todas as informações do Select
+ * @param tamanhoSelect quantidade de palavras que existe no conteudoSelect
+ * @param arquivo arquivo a ser aberto
+ * @param colunaSelecionada coluna a ser armazenada
+ * @param selectAtual qual palavra atual do conteudoSelect
+ */
+int escolheColunas(char **conteudoSelect, int tamanhoSelect, char **arquivo, int *colunaSelecionada, int *selectAtual); 
 
-int escolheColunas(char **conteudoArray, int tamanhoArray, char **arquivo, int *colunaSelecionada, int *selectAtual); 
-/*
- * Essa função está funcionando
- * apenas para uma coluna
-*/
-
-void imprimeColuna(int *colunaEntrada, char **arquivo);
+/**
+ * Função para visualização e saída
+ * @param colunaEntrada array que guarda todas as informações do Select
+ * @param tamanhoSelect quantidade de palavras que existe no conteudoSelect
+ */
+void imprimeSaida(int *colunaEntrada, char **arquivo);
 
 #endif
