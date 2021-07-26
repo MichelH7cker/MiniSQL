@@ -68,9 +68,17 @@ void ocupaConteudoSaida(char ***saida, int tamanhoConteudoSelect){
 
 void imprimeMatriz(char ***saida, int tamanhoConteudoSelect){
     for (int i = 1; i < LINHASAIDA; i++){
-        for (int j = 0; j < tamanhoConteudoSelect; j++){
-            printf("%s\t", saida[i][j]);   
+        int j = 0;
+        while (j < tamanhoConteudoSelect){
+            if(strcmp(saida[i][j], "") == 0) {
+                break;
+            }
+            printf("%s\t", saida[i][j]); 
+            j++;  
         }  
+        if(strcmp(saida[i][j], "") == 0) {
+            break;
+        }
         printf("\n");
     }
 }
