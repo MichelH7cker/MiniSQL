@@ -40,7 +40,7 @@ void abreArquivo(int colunaSelecionada, char **arquivo, char ***saida, const int
     //int tamanhoColuna = encontraArquivo(arquivo);
     
     if ((strcmp(arquivo[0], "Progs")) == 0){
-        pArquivo = fopen("progs.tsv", "r");
+        pArquivo = fopen("Progs.tsv", "r");
     } else if ((strcmp(arquivo[0], "Trabalhos")) == 0) {
         pArquivo = fopen("Trabalhos.tsv", "r");
     }
