@@ -29,22 +29,15 @@ struct {
 } Trabalhos;
 
 /**
- * Função para visualização e saída
- * @param conteudoFrom array que guarda todas as informações do Select
- * @param tamanhoConteudoFrom quantidade de palavras que existe no conteudoSelect
- * @param arquivo carrega o arquivo a ser aberto
- * @param posicaoFrom
+ * Responsável por armazenar, tanto a coluna 
+ * quanto o arquivo referente a essa coluna
+ * @param conteudoSelect são todas as informações contidas no select
+ * @param tamanhoConteudoSelect quantidade de palavras do conteudoSelect
+ * @param arquivo carrega a informação e qual arquivo será aberto
+ * @param posicaoSelect palavra (análoga a coluna do arquivo) atual do conteudoSelect
+ * @param colunaEscolhida coluna que será armazenada na matriz de saída
  */
-void selecionaArquivos(char **conteudoFrom, int tamanhoConteudoFrom, char **arquivo, int posicaoFrom);
-
-/**
- * @param conteudoSelect array que guarda todas as informações do Select
- * @param tamanhoSelect quantidade de palavras que existe no conteudoSelect
- * @param arquivo arquivo a ser aberto
- * @param colunaSelecionada coluna a ser armazenada
- * @param selectAtual qual palavra atual do conteudoSelect
- */
-int escolheColunas(char **conteudoSelect, int tamanhoSelect, char **arquivo, int *colunaSelecionada, int *selectAtual); 
+void selecionaArquivoColuna(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int posicaoSelect, int *colunaEscolhida);
 
 /**
  * Função para visualização e saída

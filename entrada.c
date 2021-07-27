@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
  
-#define LINHASAIDA 101    // LINHAS TOTAIS DA MATRIZ DE SAÍDA
+#define LINHASAIDA 102    // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
 void filtraEntrada(char *entrada, char *entradaSemVirgula){ 
     int j = 0;

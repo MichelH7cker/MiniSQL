@@ -3,18 +3,17 @@
 #include <string.h>
 
 #include "saida.h"
-#include "arquivos.h"
 
 #define COLUNASPROGS     7   //
 #define COLUNASDOCENTES  6   // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
 
-#define LINHASAIDA 101       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
+#define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
 void armazenaDadosSaida(char ***saida, const int *colunaEscolhida, FILE *pArquivo, const int colunaAtualMatriz){
     int acumuladorTabs   = 0;
     int acumuladorLinhas = 0;
-    char cursor;
+    int cursor;
     char texto[100];
 
     do{
@@ -28,12 +27,11 @@ void armazenaDadosSaida(char ***saida, const int *colunaEscolhida, FILE *pArquiv
 
         if (acumuladorTabs == *colunaEscolhida && acumuladorLinhas != 0){
             fscanf(pArquivo, "%[^\t^\n]", texto);
-            strcpy(saida[acumuladorLinhas][colunaAtualMatriz], texto);
 
+            strcpy(saida[acumuladorLinhas][colunaAtualMatriz], texto);
         }
     } while (cursor != EOF);
-
-}
+}   
 
 void abreArquivo(int colunaEscolhida, char **arquivo, char ***saida, const int colunaAtualMatriz){
     FILE *pArquivo;
@@ -61,23 +59,36 @@ void abreArquivo(int colunaEscolhida, char **arquivo, char ***saida, const int c
 void ocupaConteudoSaida(char ***saida, int tamanhoConteudoSelect){
     for (int i = 1; i < LINHASAIDA; i++){
         for (int j = 0; j < tamanhoConteudoSelect; j++){
-            strcpy(saida[i][j], "\t");   
+            strcpy(saida[i][j], "none");   
         }  
     }
 }
 
-void imprimeMatriz(char ***saida, int tamanhoConteudoSelect){
-    for (int i = 1; i < LINHASAIDA; i++){
-        int j = 0;
-        while (j < tamanhoConteudoSelect){
-            if(strcmp(saida[i][j], "") == 0) {
-                break;
+//select Progs.Sigla, Docentes.Nome from Progs, Docentes
+void imprimeMatriz(char ***saida, int colunaLimite){
+    int mostra = 1;
+    int contaNada;
+    int comparacao;
+    for (int linhaAtual = 1; linhaAtual < 101; linhaAtual++){
+        contaNada = 0;
+        for (int colunaAtual = 0; colunaAtual < colunaLimite; colunaAtual++){  
+            comparacao = strcmp(saida[linhaAtual][colunaAtual], "none");
+            if (comparacao == 0){
+                contaNada++;
+                if(contaNada == colunaLimite) {
+                    liberaMemoriaRobusta(saida, colunaLimite);
+                    exit(0);
+                }
+                continue;
             }
-            printf("%s\t", saida[i][j]); 
-            j++;  
-        }  
-        if(strcmp(saida[i][j], "") == 0) {
-            break;
+            for(int i = 0; i < contaNada; i++) {
+                printf("\t");
+            }
+            if (colunaAtual == 0){
+                printf("%s", saida[linhaAtual][colunaAtual]);
+            } else {
+                printf("\t%s", saida[linhaAtual][colunaAtual]);
+            }
         }
         printf("\n");
     }
