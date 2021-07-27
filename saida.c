@@ -2,21 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "entrada.h"
+#include "arquivos.h"
+#include "comparacao.h"
+#include "memoria.h"
+
 #define COLUNASPROGS     7   //
 #define COLUNASDOCENTES  6   // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
 
 #define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
-
-void liberaMemoriaRobusta(char ***saida, int tamanhoSelect){
-    for (int i = 0; i < LINHASAIDA; i++) {
-        for (int j = 0; j < tamanhoSelect; j++) {
-            free(saida[i][j]);
-        }
-        free(saida[i]);
-    }
-    free(saida);
-}
 
 void armazenaDadosSaida(char ***saida, const int *colunaEscolhida, FILE *pArquivo, const int colunaAtualMatriz){
     int acumuladorTabs   = 0;
@@ -73,7 +68,7 @@ void ocupaConteudoSaida(char ***saida, int tamanhoConteudoSelect){
 }
 
 //select Progs.Sigla, Docentes.Nome from Progs, Docentes
-void imprimeMatriz(char ***saida, int colunaLimite, int *linhasIguaisRes){
+void imprimeMatriz(char ***saida, int colunaLimite, int *linhasIguais){
     int mostra = 1;
     int contaNada;
     int comparacao;
@@ -93,10 +88,10 @@ void imprimeMatriz(char ***saida, int colunaLimite, int *linhasIguaisRes){
             for(int i = 0; i < contaNada; i++) {
                 printf("\t");
             }
-            if (colunaAtual == 0 && linhaAtual == linhasIguaisRes[contadorLinhasIguais]){
+            if (colunaAtual == 0 && linhaAtual == linhasIguais[contadorLinhasIguais]){
                 printf("%s", saida[linhaAtual][colunaAtual]);
                 contadorLinhasIguais++;
-            } else if (linhaAtual == linhasIguaisRes[contadorLinhasIguais]) {
+            } else if (linhaAtual == linhasIguais[contadorLinhasIguais]) {
                 printf("\t%s", saida[linhaAtual][colunaAtual]);
                 contadorLinhasIguais++;
             }
@@ -104,3 +99,4 @@ void imprimeMatriz(char ***saida, int colunaLimite, int *linhasIguaisRes){
         printf("\n");
     }
 }
+

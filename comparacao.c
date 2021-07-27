@@ -1,8 +1,9 @@
-#include<string.h>
-#include<stdlib.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "arquivos.h"
 #include "saida.h"
+#include "memoria.h"
 
 int verificaQuantidadeDeIguais(char **comandoWhere, int tamanhoComandoWhere) {
     int numIguais = 0;
@@ -31,63 +32,58 @@ void comparaDados(int *linhasIguaisRes, char **comandoWhere, int tamanhoComandoW
 
     filtraComandoWhere(comandoWhere, tamanhoComandoWhere, whereFiltrado);
     
-    for (int contadorComparacoes = 0; contadorComparacoes < quantidadeComparacao; contadorComparacoes++) {
-        for (int i = 0; i <= 100; i++) {
-            int l1 = 0;
-            int linhasCompativeis[101];
+    int linhasCompativeis[101];
+    int guardaLinhas[101];
 
+    for (int contadorComparacoes = 0; contadorComparacoes < quantidadeComparacao; contadorComparacoes++) { // percorre todo o comando where
+        for (int i = 0; i < 2; i++) {
             int colunaEscolhida;
-            int tamanhoArquivo = 1;   
-            for(int i = 0; i < quantidadeComparacao; i++) {
-                char **arquivo1;                                                 
-                alocaMemoria(arquivo1, tamanhoArquivo, 10); 
-                char ***linhaColuna1;
-                linhaColuna1 = malloc(sizeof(char**) * 101); // Linhas
-                for (int i = 0; i < 101; i++) {
-                    linhaColuna1[i] = malloc(sizeof(char*) * 1); // Colunas
-                    for (int t = 0; t < 1; t++) {
-                        linhaColuna1[i][t] = malloc(sizeof(char) * 100); //Char
-                    }
-                }
+            int tamanhoArquivo = 1;  
+            
+            char **arquivo;
+            alocaMemoria(arquivo, tamanhoArquivo, 10);
 
-                selecionaArquivoColuna(whereFiltrado, quantidadeComparacao, arquivo1, i, &colunaEscolhida);
-                if (strcmp(arquivo1[0], "none") == 0) break;
-                abreArquivo(colunaEscolhida, arquivo1, linhaColuna1, 0);
+            char ***linhaColuna1;
+            alocaMemoriaRobusta(linhaColuna1, 101, 100);
+            linhaColuna1 = malloc(sizeof(char**) * 101);
 
+            char ***linhaColuna2;
+            alocaMemoriaRobusta(linhaColuna2, 101, 100);
+            linhaColuna2 = malloc(sizeof(char**) * 101);
+ 
 
-                i++;
-                char **arquivo2;                                                
-                alocaMemoria(arquivo2, tamanhoArquivo, 10); 
-                char ***linhaColuna2;
-                linhaColuna2 = malloc(sizeof(char**) * 101); // Linhas
-                for (int i = 0; i < 101; i++) {
-                    linhaColuna2[i] = malloc(sizeof(char*) * 1); // Colunas
-                    for (int t = 0; t < 1; t++) {
-                        linhaColuna2[i][t] = malloc(sizeof(char) * 100); //Char
-                    }
+            for(int i = 0; i < quantidadeComparacao; i += 2) {
+                selecionaArquivoColuna(whereFiltrado, quantidadeComparacao, arquivo, i, &colunaEscolhida);
+                if (strcmp(arquivo[0], "none") == 0) break;
+                abreArquivo(colunaEscolhida, arquivo, linhaColuna1, 0);
             }
             
-            selecionaArquivoColuna(whereFiltrado, quantidadeComparacao, arquivo1, i, &colunaEscolhida);
-            if (strcmp(arquivo1[0], "none") == 0) break;
-            abreArquivo(colunaEscolhida, arquivo1, linhaColuna1, 0);
+            selecionaArquivoColuna(whereFiltrado, quantidadeComparacao, arquivo, i, &colunaEscolhida);
+
+            if (strcmp(arquivo[0], "none") == 0) break;
+            abreArquivo(colunaEscolhida, arquivo, linhaColuna1, 0);
 
             for(int linha = 0; linha < 101; linha++) {
                 if (strcmp(linhaColuna1[linha][0], linhaColuna2[linha][0]) == 0) {
-                    linhasCompativeis[l1] = linha;
-                    l1++; 
+                    linhasCompativeis[linha] = 1; 
+                }
+                else {
+                    linhasCompativeis[linha] = 0;
                 }
             }
+
             if(contadorComparacoes == 0) {
                 for (int i = 0; i < 101; i++) {
-                    linhasIguaisRes[i] == linhasCompativeis[i];
+                    guardaLinhas[i] == linhasCompativeis[i];
                 }
             }
             else {
-                int contadorLinhasIguais = 0;
-                for (int i = 0; i < 101; i++) {
-                    if (linhasIguaisRes[i] == linhasCompativeis[i]) {
-                        linhasIguaisRes[contadorLinhasIguais] == linhasCompativeis[i];
-                        contadorLinhasIguais++;
+                for (int contadorLinhas = 0; contadorLinhas < 101; contadorLinhas++) {
+                    if (linhasCompativeis[i] == guardaLinhas[i]) {
+
+                    }
+                    else {
+                        guardaLinhas[contadorLinhas] == 0;
                     }
                 }
             }
@@ -96,6 +92,14 @@ void comparaDados(int *linhasIguaisRes, char **comandoWhere, int tamanhoComandoW
             }
         }
     }
+
+    for (int linha = 0; linha < 101; linha++) {
+        if(linhasIguaisRes[linha] != guardaLinhas[linha]) {
+            linhasIguaisRes[linha] = 0;
+        }
+        printf("%d ", linhasIguaisRes[linha]);
+    }
+
 }
 
 void verificaLinhasPermitidas(int *linhasIguaisRes, char **comandoWhere, int tamanhoComandoWhere) {
@@ -113,10 +117,8 @@ void verificaLinhasPermitidas(int *linhasIguaisRes, char **comandoWhere, int tam
 /*
 - comparar o conteudo de duas colunas, os conteudos que forem iguais serao salvos em 
 uma terceira matriz junto com suas respectivas linha (não necessariamente na mesma matriz)
-
 - caso tenha mais comparacoes, outras matrizes de comparacoes serao separadas com suas linhas,
 quanto mais comparacoes tiver, mais matrizes de comparacoes vai ter
-
 - com todos os vetores de linhas prontos, basta compará-los entre si e com o vetor de linhas resultante
 compará-lo com sua coluna do select, vai retornar uma matriz de comparacao para printar junto a resposta
 */

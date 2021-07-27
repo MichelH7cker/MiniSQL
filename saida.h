@@ -1,8 +1,6 @@
 #ifndef __SAIDA_H__          // impede loop
 #define __SAIDA_H__          // entre arquivos
 
-#include<stdio.h>
-
 /**
  * Abre arquivos para começar a armazenar os dados
  * @param colunaSelecionada mostra qual a coluna da matriz do arquivo que será armazenada
@@ -27,24 +25,16 @@ void armazenaDadosSaida(char ***saida, const int *colunaEscolhida, FILE *pArquiv
  * com espaços em brancos. 
  * Propósito: não causar segmentation fault
  * @param saida matriz de saída
- * @param tamanhoConteudoSelect quantidade de colunas da matriz de saída
+ * @param tamanhoComandoSelect quantidade de colunas da matriz de saída
  */
-void ocupaConteudoSaida(char ***saida, int tamanhoConteudoSelect);
+void ocupaConteudoSaida(char ***saida, int tamanhoComandoSelect);
 
 
 /**
  * Função de visualização e output 
  * @param saida matriz de sáida
- * @param tamanhoConteudoSelect quantidade de colunas da matriz de saída
+ * @param tamanhoComandoSelect quantidade de colunas da matriz de saída
  */
-void imprimeMatriz(char ***saida, int tamanhoConteudoSelect, int *linhasIguaisRes);
-
-/**
- * Libera a memória de uma matriz
- * de três dimensões, por isso o nome
- * @param saida matriz de saída
- * @param tamanhoConteudoSelect quantidade de colunas da matriz de saída
- */
-void liberaMemoriaRobusta(char ***saida, int tamanhoConteudoSelect);
+void imprimeMatriz(char ***saida, int tamanhoComandoSelect, int *linhasIguais);
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef __RECEBENDOENTRADA_H__     // entre arquivos
-#define __RECEBENDOENTRADA_H__     // impede loop
+#ifndef __ENTRADA_H__     // entre arquivos
+#define __ENTRADA_H__     // impede loop
 
 /**
  * função que retira todas as vírgulas  
@@ -63,35 +63,29 @@ void completaConteudoArray(char **array, int tamanhoArray);
  * por meio do array: "conteudoFrom" 
  * @param conteudoSelect array com conteúdo referente ao select
  * @param entradaSeparada array onde cada posição é uma palavra do input
- * @param tamanhoConteudoSelect quantidade de palavras do conteúdo referente ao select
+ * @param tamanhoComandoSelect quantidade de palavras do conteúdo referente ao select
  */
-void armazenaConteudoSelect(char **conteudoSelect, char **entradaSeparada, int tamanhoConteudoSelect);
+void armazenaComandoSelect(char **conteudoSelect, char **entradaSeparada, int tamanhoComandoSelect);
 
 /**
  * separa os arquivos a serem abertos pedidos na entrada
  * por meio do array: "conteudoFrom"  
  * @param conteudoFrom array com conteúdo referente ao from
  * @param entradaSeparada array onde cada posição é uma palavra do input
- * @param tamanhoConteudoFrom quantidade de palavras referente ao conteúdo do from
+ * @param tamanhoComandoFrom quantidade de palavras referente ao conteúdo do from
  * @param quantidadePalavras quantidade de palavras totais da entrada
  */
-void armazenaConteudoFrom(char **conteudoFrom, char **entradaSeparada, int tamanhoConteudoFrom, int quantidadePalavras);
+void armazenaComandoFrom(char **conteudoFrom, char **entradaSeparada, int tamanhoComandoFrom, int quantidadePalavras);
 
 
 /**
  * mesmo que o anterior, porém com Where
  * @param conteudoWhere array com conteúdo referente ao where
  * @param entradaSeparada array onde cada posição é uma palavra do input
- * @param tamanhoConteudoWhere
+ * @param tamanhoComandoWhere
  * @param quantidadePalavras
  */
-void armazenaConteudoWhere(char **conteudoWhere, char **entradaSeparada, int tamanhoConteudoWhere, int quantidadePalavras);
+void armazenaComandoWhere(char **conteudoWhere, char **entradaSeparada, int tamanhoComandoWhere, int quantidadePalavras);
 
-/**
- * desalocação de memória
- * @param matriz genérica
- * @param tamanho quantidade de linhas
- */
-void liberaMemoria(char **matriz, int tamanho); 
 
 #endif
