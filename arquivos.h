@@ -29,6 +29,14 @@ struct {
 } Trabalhos;
 
 /**
+ * 
+ * @param matriz matriz que vai ser alocada a memoria
+ * @param tamanho quantidade de linhas da matriz
+ * @param conteudo quantidade de colunas da matriz, ou seja, quantidade de letras de cada linha
+ */
+void alocaMemoria(char **matriz, int tamanho, int conteudo);
+
+/**
  * Responsável por armazenar, tanto a coluna 
  * quanto o arquivo referente a essa coluna
  * @param conteudoSelect são todas as informações contidas no select
