@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
  
+#include "arquivos.h"
+#include "saida.h"
+#include "comparacao.h"
+#include "memoria.h"
+
 #define LINHASAIDA 102    // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
 void filtraEntrada(char *entrada, char *entradaSemVirgula){ 
@@ -97,11 +102,11 @@ void completaConteudoArray(char **array, int tamanhoArray){
     }  
 }
 
-void armazenaConteudoFrom(char **conteudoFrom, char **entradaSeparada, int tamanhoConteudoFrom, int quantidadePalavras){
+void armazenaComandoFrom(char **comandoFrom, char **entradaSeparada, int tamanhoComandoFrom, int quantidadePalavras){
     int passouPeloFrom = 0;
     int posicaoFrom = 0;
     
-    for (int posicaoEntrada = 0; posicaoFrom < tamanhoConteudoFrom; posicaoEntrada++){
+    for (int posicaoEntrada = 0; posicaoFrom < tamanhoComandoFrom; posicaoEntrada++){
         if (posicaoEntrada == quantidadePalavras){
             break;
         }
@@ -109,7 +114,7 @@ void armazenaConteudoFrom(char **conteudoFrom, char **entradaSeparada, int taman
             break;
         } 
         if (passouPeloFrom){
-            strcpy(conteudoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
+            strcpy(comandoFrom[posicaoFrom], entradaSeparada[posicaoEntrada]);
             posicaoFrom++;
         }
 
@@ -120,20 +125,20 @@ void armazenaConteudoFrom(char **conteudoFrom, char **entradaSeparada, int taman
     } 
 }
 
-void armazenaConteudoSelect(char **conteudoSelect, char **entradaSeparada, int tamanhoConteudoSelect){
+void armazenaComandoSelect(char **comandoSelect, char **entradaSeparada, int tamanhoComandoSelect){
     int posicaoSelect = 0;
     for (int posicaoEntrada = 1; strcmp(entradaSeparada[posicaoEntrada], "from") != 0; posicaoEntrada++, posicaoSelect++){
-        strcpy(conteudoSelect[posicaoSelect], entradaSeparada[posicaoEntrada]);
+        strcpy(comandoSelect[posicaoSelect], entradaSeparada[posicaoEntrada]);
     } 
 }
 
-void armazenaConteudoWhere(char **conteudoWhere, char **entradaSeparada, int tamanhoConteudoWhere, int quantidadePalavras){
+void armazenaComandoWhere(char **comandoWhere, char **entradaSeparada, int tamanhoComandoWhere, int quantidadePalavras){
     int posicaoWhere = 0;
     int passouPeloWhere = 0;
     for (int posicaoEntrada = 0; posicaoEntrada < quantidadePalavras; posicaoEntrada++){
         if(passouPeloWhere){
-            strcpy(conteudoWhere[posicaoWhere], entradaSeparada[posicaoEntrada]);
-            printf("O conteudo where vale: %s\n", conteudoWhere[posicaoWhere]);
+            strcpy(comandoWhere[posicaoWhere], entradaSeparada[posicaoEntrada]);
+            printf("O conteudo where vale: %s\n", comandoWhere[posicaoWhere]);
             posicaoWhere++;
         }
         if ((strcmp(entradaSeparada[posicaoEntrada], "where")) == 0){
@@ -141,11 +146,4 @@ void armazenaConteudoWhere(char **conteudoWhere, char **entradaSeparada, int tam
         }
         
     }
-}
-
-void liberaMemoria(char **matriz, int tamanho) {
-    for (int i = 0; i < tamanho; i++) {
-        free(matriz[i]);
-    }
-    free(matriz);
 }

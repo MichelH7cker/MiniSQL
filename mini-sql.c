@@ -4,8 +4,9 @@
 
 #include "entrada.h"
 #include "arquivos.h"
-#include "comparacao.h"
 #include "saida.h"
+#include "comparacao.h"
+#include "memoria.h"
 
 #define COLUNASPROGS 7       //
 #define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
@@ -13,7 +14,7 @@
 
 #define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
-int main(int argc, char *argv[]){
+int main(){
     char entrada[100];
     fgets(entrada, 100, stdin);
     char entradaSemVirgula[100];
@@ -21,58 +22,55 @@ int main(int argc, char *argv[]){
 
     int quantidadePalavras = verificaQuantidadePalavrasTotal(entradaSemVirgula);
 
-    char **entradaSeparada;        
-    alocaMemoria(entradaSeparada, quantidadePalavras, 50);            
-    
+    int charEntradaSeparada = 50;
+    char **entradaSeparada;   
+    alocaMemoria(entradaSeparada, quantidadePalavras, charEntradaSeparada);
     separaEntrada(entradaSemVirgula, entradaSeparada);
 
-    int tamanhoConteudoSelect = verificaQuantidadePalavrasSelect(entradaSeparada);
-    int tamanhoConteudoFrom   = verificaQuantidadePalavrasFrom(quantidadePalavras, entradaSeparada);
-    int tamanhoConteudoWhere  = verificaQuantidadePalavrasWhere(quantidadePalavras, tamanhoConteudoSelect, tamanhoConteudoFrom); 
-                                                   
+    int tamanhoComandoSelect = verificaQuantidadePalavrasSelect(entradaSeparada);
+    int tamanhoComandoFrom   = verificaQuantidadePalavrasFrom(quantidadePalavras, entradaSeparada);
+    int tamanhoComandoWhere  = verificaQuantidadePalavrasWhere(quantidadePalavras, tamanhoComandoSelect, tamanhoComandoFrom); 
+
+    char **comandoWhere;                                                 
+    int charComandoWhere = 50;
+    alocaMemoria(comandoWhere, tamanhoComandoWhere, charComandoWhere);                                                      
     
-    char **comandoWhere;       
-    alocaMemoria(comandoWhere, tamanhoConteudoWhere, 50);       
 
-    completaConteudoArray (comandoWhere, tamanhoConteudoWhere);                                        
-    armazenaConteudoWhere (comandoWhere, entradaSeparada, tamanhoConteudoWhere, quantidadePalavras);  
-    int linhasIguaisRes[101];
-    verificaLinhasPermitidas(linhasIguaisRes, comandoWhere, tamanhoConteudoWhere);
+    char **arquivo;                                                   
+    int tamanhoArquivo = 1;     
+    int charTamanhoArquivo = 10;
+    alocaMemoria(arquivo, tamanhoArquivo, charTamanhoArquivo);                                                                                               
 
-    liberaMemoria(comandoWhere, tamanhoConteudoWhere);    
+    char ***saida; 
+    int linhasMatrizRobusta = LINHASAIDA;
+    int charTamanhoMatrizRobusta = 100;
+    alocaMemoriaRobusta(saida, linhasMatrizRobusta, charTamanhoMatrizRobusta);
+
+    ocupaConteudoSaida(saida, tamanhoComandoSelect);
     
-    char **arquivo;  
-    int tamanhoArquivo = 1;                                                  
-    alocaMemoria(arquivo, tamanhoArquivo, 10);                                                                
-
-    char ***saida; //101
-    saida = malloc(sizeof(char**) * LINHASAIDA); // Linhas
-    for (int i = 0; i < LINHASAIDA; i++) {
-        saida[i] = malloc(sizeof(char*) * tamanhoConteudoSelect); // Colunas
-        for (int t = 0; t < tamanhoConteudoSelect; t++) {
-            saida[i][t] = malloc(sizeof(char) * 100); //Char
-        }
-    }
-
-    ocupaConteudoSaida(saida, tamanhoConteudoSelect);
+    //mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
     
-    //mostraEntradaSeparada(entradaSeparada, quantidadePalavras);  
+    completaConteudoArray(comandoWhere, tamanhoComandoWhere);                                        
+    armazenaComandoWhere(comandoWhere, entradaSeparada, tamanhoComandoWhere, quantidadePalavras);  
+
+    int linhasIguais[101];
+    verificaLinhasPermitidas(comandoWhere, tamanhoComandoWhere, linhasIguais);
+
+    liberaMemoria(comandoWhere, tamanhoComandoWhere);     
     
     int colunaEscolhida;
     int colunaAtualMatriz = 0;
-    char ordemSaida[tamanhoConteudoFrom][30];
-    for (int selectAtual = 0; selectAtual < tamanhoConteudoSelect; selectAtual++){
-        char **conteudoSelect;
-        alocaMemoria(conteudoSelect, tamanhoConteudoSelect, 30);                                                                                                        
-        conteudoSelect = malloc(sizeof(char*) * tamanhoConteudoSelect);     //
-                                                                      
-        completaConteudoArray (conteudoSelect, tamanhoConteudoSelect);                                      
-        armazenaConteudoSelect(conteudoSelect, entradaSeparada, tamanhoConteudoSelect);
+    char ordemSaida[tamanhoComandoFrom][30];
+    for (int selectAtual = 0; selectAtual < tamanhoComandoSelect; selectAtual++){
+        char **comandoSelect;   
+        int charTamanhoSelect = 30;                                                                                                                                                               
+        alocaMemoria(comandoSelect, tamanhoComandoSelect, charTamanhoSelect);
 
-        selecionaArquivoColuna(conteudoSelect, tamanhoConteudoSelect, arquivo, selectAtual, &colunaEscolhida);
-        liberaMemoria(conteudoSelect, tamanhoConteudoSelect);
+        completaConteudoArray (comandoSelect, tamanhoComandoSelect);                                      
+        armazenaComandoSelect(comandoSelect, entradaSeparada, tamanhoComandoSelect);
 
-        
+        selecionaArquivoColuna(comandoSelect, tamanhoComandoSelect, arquivo, selectAtual, &colunaEscolhida);
+        liberaMemoria(comandoSelect, tamanhoComandoSelect);
         
         if (strcmp(arquivo[0], "none") == 0) break; 
 
@@ -81,15 +79,15 @@ int main(int argc, char *argv[]){
         colunaAtualMatriz++;
     }
 
-    liberaMemoria(entradaSeparada, quantidadePalavras);     //  DESALOCACAO
-    liberaMemoria(arquivo, tamanhoArquivo);                 //  DE MEMORIA
+    liberaMemoria(entradaSeparada, quantidadePalavras);    
+    liberaMemoria(arquivo, tamanhoArquivo);                 
 
-    imprimeMatriz(saida, tamanhoConteudoSelect, linhasIguaisRes);
+    imprimeMatriz(saida, tamanhoComandoSelect, linhasIguais);
                           
-    liberaMemoriaRobusta(saida, tamanhoConteudoSelect);    //                        
+    //liberaMemoriaRobusta(saida, tamanhoComandoSelect);                           
 }
-/* 
 
+/* 
 ##### O programa se divide em 5 partes principais: ######
  * main
  * recebe entrada
@@ -98,4 +96,12 @@ int main(int argc, char *argv[]){
  * saída / imprimindo
  
 */ 
-     
+
+    //char **comandoFrom;                                           
+    //comandoFrom = malloc(sizeof(char*) * tamanhocomandoFrom);   
+    //for (int i = 0; i < tamanhocomandoFrom; i++) { 
+    //    comandoFrom[i] = malloc(sizeof(char) * 20);
+    //}
+    //completaConteudoArray(comandoFrom, tamanhocomandoFrom);                                                                
+    //armazenacomandoFrom(comandoFrom, entradaSeparada, tamanhocomandoFrom, quantidadePalavras);
+    //liberaMemoria(comandoFrom, tamanhocomandoFrom);

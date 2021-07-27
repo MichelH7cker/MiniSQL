@@ -1,56 +1,23 @@
 #ifndef __ARQUIVOS_H__          // entre arquivos
 #define __ARQUIVOS_H__          // impede loop
 
-struct {
-    int Instituicao;            //
-    int Programa;               //
-    int Nivel;                  //
-    int Sigla;                  //  Arquivo Progs.tsv
-    int TemDoutorado;           //
-    int Nome;                   //
-    int AreadeAvaliacao;        //
-} Progs;
 
-struct {
-    int AnodaTitulacao;         //
-    int CodigoPPG;              //
-    int Nacionalidade;          //  Arquivo Docentes.tsv
-    int Nome;                   //
-    int PaisdaInstituicao;      //
-    int Sexo;                   //
-} Docentes;
-
-struct {
-    int Ano;                    //
-    int Autor;                  //
-    int CodigoPPG;              //  Arquivo Trabalhos.tsv
-    int Idioma;                 //
-    int Orientador;             //
-} Trabalhos;
-
-/**
- * 
- * @param matriz matriz que vai ser alocada a memoria
- * @param tamanho quantidade de linhas da matriz
- * @param conteudo quantidade de colunas da matriz, ou seja, quantidade de letras de cada linha
- */
-void alocaMemoria(char **matriz, int tamanho, int conteudo);
 
 /**
  * Responsável por armazenar, tanto a coluna 
  * quanto o arquivo referente a essa coluna
- * @param conteudoSelect são todas as informações contidas no select
- * @param tamanhoConteudoSelect quantidade de palavras do conteudoSelect
+ * @param comandoSelect são todas as informações contidas no select
+ * @param tamanhocomandoSelect quantidade de palavras do comandoSelect
  * @param arquivo carrega a informação e qual arquivo será aberto
- * @param posicaoSelect palavra (análoga a coluna do arquivo) atual do conteudoSelect
+ * @param posicaoSelect palavra (análoga a coluna do arquivo) atual do comandoSelect
  * @param colunaEscolhida coluna que será armazenada na matriz de saída
  */
-void selecionaArquivoColuna(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int posicaoSelect, int *colunaEscolhida);
+void selecionaArquivoColuna(char **comandoSelect, int tamanhocomandoSelect, char **arquivo, int posicaoSelect, int *colunaEscolhida);
 
 /**
  * Função para visualização e saída
  * @param colunaEntrada array que guarda todas as informações do Select
- * @param tamanhoSelect quantidade de palavras que existe no conteudoSelect
+ * @param tamanhoSelect quantidade de palavras que existe no comandoSelect
  */
 void imprimeSaida(int *colunaEntrada, char **arquivo);
 

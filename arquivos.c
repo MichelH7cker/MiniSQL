@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "entrada.h"
+#include "saida.h"
+#include "comparacao.h"
+#include "memoria.h"
+
 #define COLUNASPROGS 7       //
 #define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
@@ -12,14 +17,7 @@
 
 #define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
-void alocaMemoria(char **matriz, int tamanho, int conteudo) {
-    matriz = malloc(sizeof(char*) * tamanho);        
-    for (int i = 0; i < tamanho; i++) {                    
-        matriz[i] = malloc(sizeof(char) * conteudo);                   
-    }                                                           
-}
-
-int percorreCabecalho(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int selectAtual, int **colunaSelecionada){
+int percorreCabecalho(char **conteudoSelect, int tamanhoComandoSelect, char **arquivo, int selectAtual, int **colunaSelecionada){
     char cabecalhoProgs[COLUNASPROGS][100] = {{"Progs.Instituicao"}, {"Progs.Programa"}, {"Progs.Nivel"}, {"Progs.Sigla"}, {"Progs.TemDoutorado"}, {"Progs.Nome"}, {"Progs.AreadeAvaliacao"}};
     char cabecalhoDocentes[COLUNASDOCENTES][100] = {{"Docentes.AnodaTitulacao"}, {"Docentes.CodigoPPG"}, {"Docentes.Nacionalidade"}, {"Docentes.Nome"}, {"Docentes.PaisdaInstituicao"}, {"Docentes.Sexo"}};
     char cabecalhoTrabalhos[COLUNASTRABALHOS][100] = {{"Trabalhos.Ano"}, {"Trabalhos.Autor"}, {"Trabalhos.CodigoPPG"}, {"Trabalhos.Idioma"}, {"Trabalhos.Orientador"}};
@@ -44,8 +42,8 @@ int percorreCabecalho(char **conteudoSelect, int tamanhoConteudoSelect, char **a
     }
 }
 
-void selecionaArquivoColuna(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int posicaoSelect, int *colunaSelecionada){
-    int arquivoSelecionado = percorreCabecalho(conteudoSelect , tamanhoConteudoSelect, arquivo, posicaoSelect, &colunaSelecionada);
+void selecionaArquivoColuna(char **conteudoSelect, int tamanhoComandoSelect, char **arquivo, int posicaoSelect, int *colunaSelecionada){
+    int arquivoSelecionado = percorreCabecalho(conteudoSelect , tamanhoComandoSelect, arquivo, posicaoSelect, &colunaSelecionada);
     
     if (arquivoSelecionado == DOCENTES){
         strcpy(arquivo[0], "Docentes");
