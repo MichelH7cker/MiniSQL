@@ -1,6 +1,8 @@
 #ifndef __SAIDA_H__          // impede loop
 #define __SAIDA_H__          // entre arquivos
 
+#include<stdio.h>
+
 /**
  * Abre arquivos para começar a armazenar os dados
  * @param colunaSelecionada mostra qual a coluna da matriz do arquivo que será armazenada
@@ -35,7 +37,7 @@ void ocupaConteudoSaida(char ***saida, int tamanhoConteudoSelect);
  * @param saida matriz de sáida
  * @param tamanhoConteudoSelect quantidade de colunas da matriz de saída
  */
-void imprimeMatriz(char ***saida, int tamanhoConteudoSelect);
+void imprimeMatriz(char ***saida, int tamanhoConteudoSelect, int *linhasIguaisRes);
 
 /**
  * Libera a memória de uma matriz
