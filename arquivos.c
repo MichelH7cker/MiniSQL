@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "saida.h"
-
 #define COLUNASPROGS 7       //
 #define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
@@ -12,7 +10,7 @@
 #define PROGS 2              // ID PARA CADA ARQUIVO
 #define TRABALHOS 3          //
 
-#define LINHASAIDA 101       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
+#define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
 int percorreCabecalho(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int selectAtual, int **colunaSelecionada){
     char cabecalhoProgs[COLUNASPROGS][100] = {{"Progs.Instituicao"}, {"Progs.Programa"}, {"Progs.Nivel"}, {"Progs.Sigla"}, {"Progs.TemDoutorado"}, {"Progs.Nome"}, {"Progs.AreadeAvaliacao"}};
@@ -46,10 +44,10 @@ void selecionaArquivoColuna(char **conteudoSelect, int tamanhoConteudoSelect, ch
         strcpy(arquivo[0], "Docentes");
     } else if(arquivoSelecionado == PROGS){
         strcpy(arquivo[0], "Progs");
-    } else {
+    } else if (arquivoSelecionado == TRABALHOS){
         strcpy(arquivo[0], "Trabalhos");
+    } else {
+        strcpy(arquivo[0], "none");
     }
     
 }
-
-//select Trabalhos.CodigoPPG, Docentes.PaisdaInstituicao, Progs.AreadeAvaliacao from Trabalhos, Docentes, Progs

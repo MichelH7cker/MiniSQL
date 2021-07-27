@@ -4,14 +4,13 @@
 
 #include "entrada.h"
 #include "arquivos.h"
-#include "comparacao.h"
 #include "saida.h"
 
 #define COLUNASPROGS 7       //
 #define COLUNASDOCENTES 6    // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
 
-#define LINHASAIDA 101       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
+#define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
 
 int main(){
@@ -53,12 +52,12 @@ int main(){
     for (int i = 0; i < LINHASAIDA; i++) {
         saida[i] = malloc(sizeof(char*) * tamanhoConteudoSelect); // Colunas
         for (int t = 0; t < tamanhoConteudoSelect; t++) {
-            saida[i][t] = malloc(sizeof(char) * 100); //Char
+            saida[i][t] = malloc(sizeof(char) * 150); //Char
         }
     }
 
     ocupaConteudoSaida(saida, tamanhoConteudoSelect);
-    
+
     //mostraEntradaSeparada(entradaSeparada, quantidadePalavras);
     
     //completaConteudoArray (conteudoWhere, tamanhoConteudoWhere);                                        
@@ -87,6 +86,7 @@ int main(){
         for (int i = 0; i < tamanhoConteudoFrom; i++) { 
             conteudoFrom[i] = malloc(sizeof(char) * 20);
         }
+        
         completaConteudoArray(conteudoFrom, tamanhoConteudoFrom);                                                                
         armazenaConteudoFrom(conteudoFrom, entradaSeparada, tamanhoConteudoFrom, quantidadePalavras);
         liberaMemoria(conteudoFrom, tamanhoConteudoFrom);
@@ -98,12 +98,13 @@ int main(){
         colunaAtualMatriz++;
         posicaoFrom++;
     }
+    
+    liberaMemoria(entradaSeparada, quantidadePalavras);     
+    liberaMemoria(arquivo, tamanhoArquivo);                 
 
     imprimeMatriz(saida, tamanhoConteudoSelect);
-
-    liberaMemoria(entradaSeparada, quantidadePalavras);    //
-    liberaMemoria(arquivo, tamanhoArquivo);                // DESALOCAÇÃO      
-    liberaMemoriaRobusta(saida, tamanhoConteudoSelect);    //                        
+                          
+    liberaMemoriaRobusta(saida, tamanhoConteudoSelect);                           
 }
 
 /* 

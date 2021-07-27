@@ -6,4 +6,13 @@ all : mini-sql.o entrada.o arquivos.o saida.o
 	gcc -o executavel mini-sql.o entrada.o arquivos.o saida.o
 
 run :
-	./executavel
+	./executavel 
+
+zip : 
+	zip ProjetoMiniSQL.zip *.h *.c *.tsv Makefile
+
+debug : 
+	valgrind ./executavel 
+
+clean :
+	rm *.o
