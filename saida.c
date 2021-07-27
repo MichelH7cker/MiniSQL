@@ -2,13 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "saida.h"
-
 #define COLUNASPROGS     7   //
 #define COLUNASDOCENTES  6   // QUANTIDADE DE COLUNAS DE CADA ARQUIVO
 #define COLUNASTRABALHOS 5   //
 
 #define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
+
+void liberaMemoriaRobusta(char ***saida, int tamanhoSelect){
+    for (int i = 0; i < LINHASAIDA; i++) {
+        for (int j = 0; j < tamanhoSelect; j++) {
+            free(saida[i][j]);
+        }
+        free(saida[i]);
+    }
+    free(saida);
+}
 
 void armazenaDadosSaida(char ***saida, const int *colunaEscolhida, FILE *pArquivo, const int colunaAtualMatriz){
     int acumuladorTabs   = 0;
@@ -65,10 +73,11 @@ void ocupaConteudoSaida(char ***saida, int tamanhoConteudoSelect){
 }
 
 //select Progs.Sigla, Docentes.Nome from Progs, Docentes
-void imprimeMatriz(char ***saida, int colunaLimite){
+void imprimeMatriz(char ***saida, int colunaLimite, int *linhasIguaisRes){
     int mostra = 1;
     int contaNada;
     int comparacao;
+    int contadorLinhasIguais = 0;
     for (int linhaAtual = 1; linhaAtual < 101; linhaAtual++){
         contaNada = 0;
         for (int colunaAtual = 0; colunaAtual < colunaLimite; colunaAtual++){  
@@ -84,22 +93,14 @@ void imprimeMatriz(char ***saida, int colunaLimite){
             for(int i = 0; i < contaNada; i++) {
                 printf("\t");
             }
-            if (colunaAtual == 0){
+            if (colunaAtual == 0 && linhaAtual == linhasIguaisRes[contadorLinhasIguais]){
                 printf("%s", saida[linhaAtual][colunaAtual]);
-            } else {
+                contadorLinhasIguais++;
+            } else if (linhaAtual == linhasIguaisRes[contadorLinhasIguais]) {
                 printf("\t%s", saida[linhaAtual][colunaAtual]);
+                contadorLinhasIguais++;
             }
         }
         printf("\n");
     }
-}
-
-void liberaMemoriaRobusta(char ***saida, int tamanhoSelect){
-    for (int i = 0; i < LINHASAIDA; i++) {
-        for (int j = 0; j < tamanhoSelect; j++) {
-            free(saida[i][j]);
-        }
-        free(saida[i]);
-    }
-    free(saida);
 }
