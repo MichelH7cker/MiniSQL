@@ -12,6 +12,13 @@
 
 #define LINHASAIDA 102       // LINHAS TOTAIS DA MATRIZ DE SAÍDA
 
+void alocaMemoria(char **matriz, int tamanho, int conteudo) {
+    matriz = malloc(sizeof(char*) * tamanho);        
+    for (int i = 0; i < tamanho; i++) {                    
+        matriz[i] = malloc(sizeof(char) * conteudo);                   
+    }                                                           
+}
+
 int percorreCabecalho(char **conteudoSelect, int tamanhoConteudoSelect, char **arquivo, int selectAtual, int **colunaSelecionada){
     char cabecalhoProgs[COLUNASPROGS][100] = {{"Progs.Instituicao"}, {"Progs.Programa"}, {"Progs.Nivel"}, {"Progs.Sigla"}, {"Progs.TemDoutorado"}, {"Progs.Nome"}, {"Progs.AreadeAvaliacao"}};
     char cabecalhoDocentes[COLUNASDOCENTES][100] = {{"Docentes.AnodaTitulacao"}, {"Docentes.CodigoPPG"}, {"Docentes.Nacionalidade"}, {"Docentes.Nome"}, {"Docentes.PaisdaInstituicao"}, {"Docentes.Sexo"}};
